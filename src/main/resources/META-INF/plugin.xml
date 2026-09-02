@@ -1,0 +1,43 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <id>dev.gaphunter.loginjectioncompanion</id>
+    <name>Log Injection Companion</name>
+    <vendor>Gap Hunter Labs</vendor>
+    <description><![CDATA[
+        <p>Flags an unsanitized logging call reachable from an HTTP
+        endpoint parameter -- CWE-117 (Log Injection): an attacker can
+        inject a CRLF sequence to forge fake log entries, hiding a real
+        attack trail or misleading whoever reviews the logs later
+        (SEI CERT IDS03-J, "Do not log unsanitized user input").</p>
+        <p>Built on a REAL whole-project interprocedural taint
+        analysis -- the base technique real dataflow frameworks use:
+        the actual project call graph, condensed into strongly
+        connected components via Tarjan's algorithm (handling
+        recursion/mutual recursion correctly), with taint summaries
+        computed per method to a real FIXED POINT, not a bounded-depth
+        approximation. The hardest algorithmic technique in this
+        catalog.</p>
+        <p>Stated honestly: AWS CodeGuru Reviewer has a dedicated log
+        injection detector, but it's CI/batch, not an inline IDE
+        inspection. Qodana's own taint analysis covers OWASP categories
+        A01/A03/A07/A08/A10 -- Log Injection (A09, Security Logging
+        Failures) is NOT among them, and Qodana taint analysis requires
+        a paid Ultimate Plus license regardless (not Community
+        Edition). No dedicated Marketplace plugin found for this exact
+        angle.</p>
+        <p>Free. No license nags, no telemetry, no network calls.</p>
+    ]]></description>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.java</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <localInspection language="JAVA"
+            groupName="Log Injection Companion"
+            displayName="Unsanitized endpoint parameter reaches a logging call"
+            enabledByDefault="true"
+            level="WARNING"
+            implementationClass="dev.gaphunter.loginjectioncompanion.inspection.LogInjectionInspection"/>
+        <notificationGroup id="Log Injection Companion" displayType="BALLOON"/>
+    </extensions>
+</idea-plugin>
