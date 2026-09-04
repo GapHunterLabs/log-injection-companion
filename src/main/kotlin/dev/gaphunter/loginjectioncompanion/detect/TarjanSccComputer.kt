@@ -1,5 +1,7 @@
 package dev.gaphunter.loginjectioncompanion.detect
 
+import com.intellij.openapi.progress.ProgressManager
+
 /**
  * Real Tarjan's Strongly Connected Components algorithm over the
  * project's method call graph -- the base technique a real
@@ -17,6 +19,12 @@ package dev.gaphunter.loginjectioncompanion.detect
  * `strongConnect`, and this analysis explicitly promises never to
  * crash on a large graph (see [dev.gaphunter.loginjectioncompanion.detect.ProjectLogTaintAnalyzer.MAX_METHODS]
  * for the separate node-count safety valve).
+ *
+ * Calls [ProgressManager.checkCanceled] once per traversal step so a
+ * large real call graph can't block the read action uncancellably --
+ * retrofitted here 2026-09-03 (catalog-wide review found it missing
+ * in every copy of this class except
+ * `interface-resource-close-divergence-companion`'s).
  */
 class TarjanSccComputer<T>(private val graph: Map<T, List<T>>) {
 
@@ -42,6 +50,7 @@ class TarjanSccComputer<T>(private val graph: Map<T, List<T>>) {
         callStack.addLast(beginNode(start))
 
         while (callStack.isNotEmpty()) {
+            ProgressManager.checkCanceled()
             val frame = callStack.last()
             val v = frame.node
             val neighbors = graph[v].orEmpty()

@@ -4,6 +4,17 @@
 
 ## [Unreleased]
 
+## [0.1.1]
+
+### Fixed
+
+- The interprocedural taint fixed-point computation (whole-project
+  Tarjan-SCC + per-file scan) now checks for cancellation
+  (`ProgressManager.checkCanceled()`) once per file and once per
+  fixed-point iteration -- a large real project could previously block
+  the read action uncancellably while the user kept typing. Catalog-wide
+  gap found via manual review, retrofitted here.
+
 ## [0.1.0]
 
 ### Added
@@ -14,5 +25,6 @@
   flagging an HTTP endpoint parameter that reaches an unsanitized
   logging call anywhere in the real call graph (CWE-117).
 
-[Unreleased]: https://github.com/GapHunterLabs/log-injection-companion/compare/0.1.0...HEAD
+[Unreleased]: https://github.com/GapHunterLabs/log-injection-companion/compare/0.1.1...HEAD
+[0.1.1]: https://github.com/GapHunterLabs/log-injection-companion/compare/0.1.0...0.1.1
 [0.1.0]: https://github.com/GapHunterLabs/log-injection-companion/commits/0.1.0
