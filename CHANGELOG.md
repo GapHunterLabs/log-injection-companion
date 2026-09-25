@@ -4,6 +4,13 @@
 
 ## [Unreleased]
 
+## [0.1.2]
+
+### Fixed
+
+- Review/star CTA now links to this plugin's own Marketplace
+  reviews page instead of the vendor's generic plugin list.
+
 ## [0.1.1]
 
 ### Fixed
@@ -25,6 +32,7 @@
   flagging an HTTP endpoint parameter that reaches an unsanitized
   logging call anywhere in the real call graph (CWE-117).
 
-[Unreleased]: https://github.com/GapHunterLabs/log-injection-companion/compare/0.1.1...HEAD
+[Unreleased]: https://github.com/GapHunterLabs/log-injection-companion/compare/0.1.2...HEAD
+[0.1.2]: https://github.com/GapHunterLabs/log-injection-companion/compare/0.1.1...0.1.2
 [0.1.1]: https://github.com/GapHunterLabs/log-injection-companion/compare/0.1.0...0.1.1
 [0.1.0]: https://github.com/GapHunterLabs/log-injection-companion/commits/0.1.0
